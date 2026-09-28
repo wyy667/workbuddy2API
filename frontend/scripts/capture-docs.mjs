@@ -19,7 +19,8 @@ try{
  await page.getByRole('button',{name:'切换夜间模式'}).click();await capture('overview-dark.png');
  const map=page.locator('.request-map');await map.scrollIntoViewIfNeeded();await map.locator('.map-route').first().waitFor();await page.waitForTimeout(500);await map.screenshot({path:fileURLToPath(new URL('request-map.png',out)),animations:'disabled'});
  await page.getByRole('button',{name:'切换日间模式'}).click();
- for(const id of ['usage','models']){await page.locator(`.nav-link[href="#sec-${id}"]`).click();await capture(id+'.png');}
+ // Preserve maintainer-provided models.png and tasks-center.png.
+ await page.locator('.nav-link[href="#sec-usage"]').click();await capture('usage.png');
  await page.locator('.nav-link[href="#sec-overview"]').click();await page.getByRole('button',{name:'选择日间配色'}).click();await page.getByRole('button',{name:'熔岩与深海'}).click();await capture('overview-lava.png');
- console.log('Captured six documentation screenshots using synthetic fixtures.');
+ console.log('Captured five documentation screenshots; maintainer screenshots preserved.');
 }finally{await browser?.close();server.kill();await unlink(fixture).catch(()=>{});}

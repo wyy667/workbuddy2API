@@ -55,4 +55,4 @@ npm run fixture
 
 ## 文档截图
 
-在仓库根目录运行 `node frontend/scripts/capture-docs.mjs`，使用隔离演示数据生成 `docs/images/`。脚本使用 Playwright Chromium；首次可在 frontend 目录执行 `npx playwright install chromium`。常规 E2E 配置使用系统 Chrome。
+在仓库根目录运行 `node frontend/scripts/capture-docs.mjs`，使用隔离演示数据生成 `docs/images/` 中的五张预览图。模型广场 `models.png` 和任务中心 `tasks-center.png` 使用维护者提供的实际截图，脚本不会覆盖。脚本使用 Playwright Chromium；首次可在 frontend 目录执行 `npx playwright install chromium`。常规 E2E 配置使用系统 Chrome。
