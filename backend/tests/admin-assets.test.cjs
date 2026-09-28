@@ -1,0 +1,24 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),http=require('node:http'),zlib=require('node:zlib');
+const {createAdminAssets}=require('../admin-assets.cjs');
+test('static assets serve compressed immutable builds, HEAD, and reject non-assets',async t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'wb-assets-'));
+ fs.mkdirSync(path.join(root,'assets'));
+ const body='export const value = 42;';
+ fs.writeFileSync(path.join(root,'assets/index-abc123.js'),body);
+ fs.writeFileSync(path.join(root,'assets/index-abc123.js.gz'),zlib.gzipSync(body));
+ fs.writeFileSync(path.join(root,'secret.json'),'private');
+ const serve=createAdminAssets(root),server=http.createServer(async(req,res)=>{if(!await serve(req,res)){res.writeHead(418);res.end();}});
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ t.after(()=>{server.closeAllConnections();server.close();fs.rmSync(root,{recursive:true,force:true});});
+ const base='http://127.0.0.1:'+server.address().port;
+ const response=await fetch(base+'/admin-ui/assets/index-abc123.js',{headers:{'Accept-Encoding':'gzip'}});
+ assert.equal(response.headers.get('content-encoding'),'gzip');
+ assert.match(response.headers.get('cache-control'),/immutable/);
+ assert.equal(await response.text(),body);
+ const head=await fetch(base+'/admin-ui/assets/index-abc123.js',{method:'HEAD'});
+ assert.equal(head.status,200);assert.equal(await head.text(),'');
+ for(const route of ['/admin-ui/assets/secret.json','/admin-ui/assets/%2e%2e%2fsecret.json','/admin-ui/secret.json','/admin-ui/assets/missing.js']) assert.equal((await fetch(base+route)).status,404);
+ assert.equal((await fetch(base+'/admin-ui/assets/index-abc123.js',{method:'POST'})).status,404);
+});

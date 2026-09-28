@@ -1,0 +1,32 @@
+{
+  "name": "workbuddy-console",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:geo": "node scripts/build-geo.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build && node scripts/publish.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "playwright test",
+    "format": "prettier --write src scripts tests *.js *.json index.html",
+    "preview": "vite preview --host 127.0.0.1",
+    "fixture": "node tests/fixture-server.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "lucide-vue-next": "^0.468.0",
+    "qrcode": "^1.5.4",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@vitejs/plugin-vue": "^5.2.0",
+    "esbuild": "0.28.2",
+    "ipaddr.js": "2.5.0",
+    "maxmind": "5.0.7",
+    "prettier": "^3.9.9",
+    "vite": "^6.1.0",
+    "vite-plugin-singlefile": "^2.2.0"
+  }
+}

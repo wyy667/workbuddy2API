@@ -1,0 +1,14 @@
+{
+  "name": "workbuddy-http-dispatcher-build",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "esbuild http-dispatcher.cjs --bundle --platform=node --target=node22 --format=cjs --outfile=../http-dispatcher.cjs --legal-comments=inline"
+  },
+  "dependencies": {
+    "undici": "7.30.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
