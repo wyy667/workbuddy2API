@@ -49,7 +49,10 @@ npm run fixture
 - `src/analytics.js`：统计计算与时间区间。
 - `src/assets/models/`：用户项目与混元官网的原始 SVG，附来源记录。
 - `src/style.css` / `src/pages.css`：设计变量、主题、响应式与动效。
-- `reference/admin.original.html`：本次修改前的原前端，仅供功能对照。
 - `MIGRATION.md`：功能迁移清单和验证边界。
 
-日间支持青柠/炭黑、熔岩橙/深海蓝、帝王紫/柠檬黄。夜间固定黑色底。尊重系统减少动画偏好，支持键盘焦点、弹窗焦点约束及加载/失败/空状态。界面不使用 Emoji，后台动态显示文本也会清理 Emoji。
+日间支持八套撞色方案，完整配色和截图见 [项目图文介绍](../docs/PROJECT.md)。夜间固定黑色底。尊重系统减少动画偏好，支持键盘焦点、弹窗焦点约束及加载/失败/空状态。界面不使用 Emoji，后台动态显示文本也会清理 Emoji。
+
+## 文档截图
+
+在仓库根目录运行 `node frontend/scripts/capture-docs.mjs`，使用隔离演示数据生成 `docs/images/`。脚本使用 Playwright Chromium；首次可在 frontend 目录执行 `npx playwright install chromium`。常规 E2E 配置使用系统 Chrome。
