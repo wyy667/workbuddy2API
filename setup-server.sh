@@ -46,6 +46,7 @@ mkdir -p "$INSTALL_DIR/admin-ui"
 cp -a "$SCRIPT_DIR/admin-ui/." "$INSTALL_DIR/admin-ui/"
 mkdir -p "$INSTALL_DIR/backend"
 cp "$SCRIPT_DIR"/backend/*.cjs "$INSTALL_DIR/backend/"
+cp "$SCRIPT_DIR/backend/project-version.json" "$INSTALL_DIR/backend/"
 if [ -d "$SCRIPT_DIR/backend/vendor-source" ]; then cp -a "$SCRIPT_DIR/backend/vendor-source" "$INSTALL_DIR/backend/"; fi
 mkdir -p "$INSTALL_DIR/data"
 if [ ! -f "$INSTALL_DIR/data/dbip-city-lite.mmdb" ] && [ -f "$SCRIPT_DIR/data/dbip-city-lite.mmdb" ]; then

@@ -487,6 +487,7 @@ const server = http.createServer(async (req, res) => {
     req.on("close", () => streams.delete(res));
     return;
   }
+  if (p === "/project/version" || p === "/project/check-update") return send({ok:true,version:'3.0.1',latestVersion:'3.0.1',status:'current',checkedAt:Date.now()});
   if (p === "/status") { const data = statusData(empty); if (url.searchParams.get("detail") === "light") delete data.usage; return send(data); }
   if (p === "/usage") return send({ok:true,usage:statusData(empty).usage});
   if (p === "/metrics")

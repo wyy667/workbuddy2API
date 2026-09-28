@@ -103,6 +103,7 @@ process.on('message', job => {
     const root = path.resolve(__dirname, '../..');
     const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'workbuddy-audit-'));
     fs.mkdirSync(path.join(sandbox,'backend')); for (const name of fs.readdirSync(path.join(root,'backend')).filter(n=>n.endsWith('.cjs'))) fs.copyFileSync(path.join(root,'backend',name), path.join(sandbox,'backend',name));
+    fs.copyFileSync(path.join(root,'backend','project-version.json'), path.join(sandbox,'backend','project-version.json'));
     fs.copyFileSync(path.join(root,'server.js'), path.join(sandbox,'server.cjs'));
     fs.copyFileSync(path.join(root,'admin.html'), path.join(sandbox,'admin.html'));
     fs.mkdirSync(path.join(sandbox,'auths'));

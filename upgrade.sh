@@ -8,11 +8,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 [ -d "$INSTALL_DIR" ] || { echo 'Install directory missing'; exit 1; }
 [ "$(node -p 'Number(process.versions.node.split(".")[0])')" -ge 22 ] || { echo 'Node 22+ required'; exit 1; }
 for f in server.js admin.html ext-assets.js; do [ -f "$SCRIPT_DIR/$f" ]; done
-for name in request quota credentials persistence schedule compression request-map geo-ip geo-worker admin-assets hardening http-dispatcher; do
+for name in request quota credentials persistence schedule compression request-map geo-ip geo-worker admin-assets hardening http-dispatcher project-update; do
   [ -f "$SCRIPT_DIR/backend/$name.cjs" ]
   node --check "$SCRIPT_DIR/backend/$name.cjs"
 done
 [ -d "$SCRIPT_DIR/admin-ui/assets" ]
+node -e 'const v=require(process.argv[1]).version;if(!/^\d+\.\d+\.\d+$/.test(v))process.exit(1)' "$SCRIPT_DIR/backend/project-version.json"
 node --check "$SCRIPT_DIR/server.js"
 BACKUP_DIR="$INSTALL_DIR/.upgrade-backup-$(date +%Y%m%d-%H%M%S)"
 mkdir -m 700 "$BACKUP_DIR"
@@ -46,7 +47,7 @@ if [ ! -f "$INSTALL_DIR/data/dbip-city-lite.mmdb" ] && [ -f "$SCRIPT_DIR/data/db
   chmod 600 "$INSTALL_DIR/data/dbip-city-lite.mmdb.new"
   mv "$INSTALL_DIR/data/dbip-city-lite.mmdb.new" "$INSTALL_DIR/data/dbip-city-lite.mmdb"
 fi
-for f in "$SCRIPT_DIR"/backend/*.cjs; do
+for f in "$SCRIPT_DIR"/backend/*.cjs "$SCRIPT_DIR/backend/project-version.json"; do
   dest="$INSTALL_DIR/backend/$(basename "$f")"
   cp "$f" "$dest.new"
   chown "$OWNER" "$dest.new"

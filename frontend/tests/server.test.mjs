@@ -10,6 +10,7 @@ test("real backend serves the Vue artifact and preserves saved OpenCode credenti
     path.join(os.tmpdir(), "workbuddy-console-test-"),
   );
   await fs.mkdir(path.join(sandbox, "backend"));
+  await fs.copyFile(new URL('../../backend/project-version.json', import.meta.url), path.join(sandbox, 'backend', 'project-version.json'));
   for (const name of (await fs.readdir(new URL("../../backend", import.meta.url))).filter(n => n.endsWith(".cjs"))) await fs.copyFile(new URL("../../backend/" + name, import.meta.url), path.join(sandbox, "backend", name));
   await fs.copyFile(
     new URL("../../server.js", import.meta.url),
@@ -74,6 +75,10 @@ test("real backend serves the Vue artifact and preserves saved OpenCode credenti
       });
     });
     assert.equal((await fetch(base + "/admin?key=invalid")).status, 401);
+    assert.equal((await fetch(base + '/admin/api/project/version')).status, 401);
+    assert.equal((await fetch(base + '/admin/api/project/check-update', {method:'POST'})).status, 401);
+    assert.equal((await request('/project/version')).version, '3.0.1');
+    assert.equal((await request('/project/check-update', {})).status, 'error');
     const html = await (
       await fetch(base + "/admin?key=local-integration-test")
     ).text();

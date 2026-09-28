@@ -52,6 +52,7 @@ const hardening = require('./backend/hardening.cjs');
 const upstreamDispatcher = require('./backend/http-dispatcher.cjs')();
 // Override native fetch parser deadlines; application signals own each operation's timeout.
 const fetch = (url, options) => globalThis.fetch(url, { ...options, dispatcher: upstreamDispatcher });
+const projectUpdates = require('./backend/project-update.cjs').createProjectUpdates({ fetchImpl: fetch });
 const { createQuotaLedger, keyId, resolveKey } = require('./backend/quota.cjs');
 const { createPersistence } = require('./backend/persistence.cjs');
 const { scheduledDue } = require('./backend/schedule.cjs');
@@ -4460,6 +4461,14 @@ function baseUrlForDisplay(req) {
 }
 
 async function handleAdmin(req, res, urlPath) {
+  if (req.method === 'GET' && urlPath === '/admin/api/project/version') {
+    res.setHeader('Cache-Control', 'no-store');
+    return json(res, 200, projectUpdates.info());
+  }
+  if (req.method === 'POST' && urlPath === '/admin/api/project/check-update') {
+    res.setHeader('Cache-Control', 'no-store');
+    return json(res, 200, await projectUpdates.check());
+  }
   if (req.method === 'POST' && urlPath === '/admin/api/request-map/settings') {
     const body = JSON.parse((await readBody(req)).toString('utf8'));
     if (typeof body.enabled !== 'boolean') return json(res, 400, {ok:false,message:'enabled 必须为布尔值'});

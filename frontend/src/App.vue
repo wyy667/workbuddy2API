@@ -27,6 +27,8 @@ import Providers from "./pages/Providers.vue";
 import Backup from "./pages/Backup.vue";
 import Dialogs from "./components/Dialogs.vue";
 import InitialState from "./components/InitialState.vue";
+import ProjectLinks from "./components/ProjectLinks.vue";
+import projectVersion from "../../backend/project-version.json";
 const pages = {
   overview: Overview,
   accounts: Accounts,
@@ -172,6 +174,7 @@ onBeforeUnmount(() => {
               class="nav-arrow"
           /></a>
         </div>
+        <ProjectLinks />
       </nav>
       <div class="sidebar-bottom">
         <div class="sidebar-note">
@@ -358,7 +361,7 @@ onBeforeUnmount(() => {
           <span
             ><span class="footer-brand">workbuddy</span>
             <span class="muted">/</span> 为流畅的工作而设计</span
-          ><span>PROXY CONSOLE <span class="footer-version">V3.0</span></span>
+          ><span>PROXY CONSOLE <span class="footer-version">V{{ projectVersion.version }}</span></span>
         </footer>
       </main>
     </div>

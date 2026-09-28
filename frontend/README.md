@@ -19,7 +19,7 @@ npm run build
 
 构建会生成 `dist/index.html` 并发布到项目根目录 `admin.html`。脚本、样式、SVG 标识和字体独立打包，无 CDN 依赖；地图以异步模块加载，关闭时不下载。带内容哈希的静态资源启用长期缓存和预压缩，升级时保留旧哈希以兼容已打开页面和回滚。中文使用系统字体。Manrope 使用 SIL OFL 1.1，完整许可保存在 `licenses/Manrope-OFL.txt` 并随 `admin-ui/Manrope-OFL.txt` 一并提供。
 
-请一并部署根目录 `server.js`、`admin.html`、`admin-ui/`、`ext-assets.js` 和 `backend/*.cjs`：后端有一处兼容修正，确保 OpenCode 状态更新省略 key 时保留已有凭据，明确清除时才删除。服务启动时会读取管理台 HTML，因此替换后需要重启已有服务。原升级脚本可直接使用；不需要在生产服务器安装前端依赖。
+请一并部署根目录 `server.js`、`admin.html`、`admin-ui/`、`ext-assets.js` 和 `backend/`（包括 `.cjs` 模块与 `project-version.json`）。服务启动时会读取管理台 HTML，因此替换后需要重启已有服务。升级脚本可直接使用；不需要在生产服务器安装前端依赖。
 
 ## 验证
 
