@@ -13,7 +13,8 @@ test('local info never fetches; checks coalesce and expire after a minute', asyn
   let calls=0, time=1000;
   const updates=createProjectUpdates({now:()=>time,fetchImpl:async (url,options)=>{
     calls++;
-    assert.equal(new URL(url).hostname,'raw.githubusercontent.com');
+    assert.equal(new URL(url).hostname,'api.github.com');
+    assert.equal(options.headers.Accept,'application/vnd.github.raw+json');
     assert.equal(options.redirect,'error');
     assert.equal(options.headers.Authorization,undefined);
     return Response.json({version:'3.10.0'});

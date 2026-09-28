@@ -2,7 +2,7 @@
 
 const { version } = require('./project-version.json');
 const repository = 'https://github.com/wyy667/workbuddy2API';
-const manifestUrl = 'https://raw.githubusercontent.com/wyy667/workbuddy2API/main/backend/project-version.json';
+const manifestUrl = 'https://api.github.com/repos/wyy667/workbuddy2API/contents/backend/project-version.json?ref=main';
 
 function compareVersions(a, b) {
   const valid = /^(0|[1-9]\d{0,5})\.(0|[1-9]\d{0,5})\.(0|[1-9]\d{0,5})$/;
@@ -21,7 +21,7 @@ function createProjectUpdates({ fetchImpl = globalThis.fetch, now = Date.now } =
     flight = (async () => {
       try {
         const response = await fetchImpl(manifestUrl, {
-          headers: { Accept: 'application/json', 'User-Agent': 'workbuddy2API-update-check' },
+          headers: { Accept: 'application/vnd.github.raw+json', 'User-Agent': 'workbuddy2API-update-check' },
           signal: AbortSignal.timeout(10000), redirect: 'error',
         });
         if (!response.ok) throw new Error('GitHub 暂时不可用');
